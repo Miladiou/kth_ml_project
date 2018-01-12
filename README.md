@@ -1,4 +1,4 @@
-# MLProject
+# ML Project
 
 ## Action plan
 
@@ -15,7 +15,5 @@
 
 
 ## Programming Advice
-
-* Use `cvxopt`
-
+* Use `cvxopt` and base the SVM on it
 
