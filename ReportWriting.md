@@ -1,3 +1,3 @@
-* Explain
-* Present re-implementation
-* Critically discuss the report
+* Explain - Artem
+* Present re-implementation Rémi + Clément
+* Critically discuss the report - Kevin
