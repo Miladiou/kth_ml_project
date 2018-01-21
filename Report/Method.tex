@@ -29,11 +29,21 @@ is also Gaussian, whose parameters (i.e. $m$ and $\Sigma$) can be found given ex
 
 The posterior can be simplified by integrating out the weights, which leads to the marginal likelihood $p(\boldsymbol{t}, \boldsymbol{\alpha}, \sigma^2)$.
 
-Now, the aim is to estimate $\alpha$ and $\sigma^2$ that maximize the marginal likelihood above \footnote{This is known as type-2 maximum likelihood.}, which can be accomplished in two ways. Either, we can set the derivative of the log marginal likelihood to zero, in order to obtain $\alpha$ and $\sigma^2$, or use expectation maximization method [1,2]. The new estimation of hyperparameters can then be used to estimate the mean and the covariance of the posterior [2]. The re-estimation process repeats until convergence \footnote{When an appropriate convergence criterion is satisfied [2]. } [1].
+Now, the aim is to estimate $\alpha$ and $\sigma^2$ that maximize the marginal likelihood above \footnote{This is known as type-2 maximum likelihood [2].}, which can be accomplished in two ways. Either, we can set the derivative of the log marginal likelihood to zero, in order to obtain $\alpha$ and $\sigma^2$, or use expectation maximization method [1,2]. The new estimation of hyperparameters can then be used to estimate the mean and the covariance of the posterior [2]. The re-estimation process repeats until convergence \footnote{When an appropriate convergence criterion is satisfied [1]. } [1].
 
 \subsubsection{Prediction}
-Once the optimal values of $\alpha$ and $\sigma^2$ have been found, we can use them to find the predictive distribution over $t$ [2]. Given a new input $x$, the predictive distribution $p(t|\boldsymbol{x}, \boldsymbol{X}, \boldsymbol{t}, \boldsymbol{\alpha}, \sigma^2)$ is also a Gaussian, so there exists a closed-form formula to compute the mean and the covariance.
+Once the optimal values of $\alpha$ and $\sigma^2$ have been found, we can use them to find the predictive distribution over $t$ [2]. Given a new input $x$, the predictive distribution $p(t|\boldsymbol{x}, \boldsymbol{X}, \boldsymbol{t}, \boldsymbol{\alpha}, \sigma^2)$ is also a Gaussian, so there exists a closed-form formula to compute the mean and the covariance [2].
 
 \subsection{Classification}
+Classification is very similar to regression, with the differences outlined below. Method wise it is the same as described in regression unless stated otherwise.
+
+\subsubsection{Two-class problem}
+In order to classify input values to discrete classes, the logistic sigmoid function can be used [2]. It has the property that its range is $[0,1]$.
+
+\subsubsection{Approximating marginal likelihood}
+In contrast to regression, it is not possible to integrate out the weight parameter. Instead, Laplacian approximation can be used.
+
+
+TODO: we can estimate the weights.
 
 
