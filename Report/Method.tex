@@ -1,17 +1,37 @@
 \section{Method}
 %TODO:
-RVMs can be thought of as SVMs that use a Bayesian treatment. Instead of providing direct answers, RVMs return probabilistic predictions. We start of by computing the hyperparameters $\alpha,\sigma^2$ of the priors for each weight (all of the priors being independent) based on the data. Expectation-maximization (EM) method is used to  find optimal values of $\alpha,\sigma^2$ (i.e. those values that maximize the \textit{evidence}). This is what constitutes the learning process. %Inference is then computed by 
+RVMs can be thought of as SVMs that use a Bayesian treatment. Instead of providing direct answers, RVMs return probabilistic predictions. We start of by computing the hyperparameters $\alpha,\sigma^2$ of the priors for each weight (all of the priors being independent) based on the data. The roots of the derivatives or the Expectation-maximization (EM) method can be used to find optimal values of $\alpha,\sigma^2$ (i.e. those values that maximize the \textit{evidence}). This is what constitutes the learning process. %Inference is then computed by 
 
 %in SVM, support vectors are close to the decision boundary whereas the relevance vectors describe prototypicla examples of classes.
+\subsection{Terminology}
+\begin{itemize}
+	\item $\boldsymbol{x}$ -- the input vector, consisting of $(x_1,\dots x_N)$.
+	\item $\boldsymbol{X}$ -- the collection of input vectors such that the $n$th row is $x_n^T$.
+	\item $\boldsymbol{t}$ -- the target values vector.
+	\item $\boldsymbol{w}$ -- the set of weights, consisting of $(w_1,\dots w_N)$.
+\end{itemize}
 
 \subsection{Regression}
-Regression with RVMs consists of three main steps: initialization, learning and inference. 
+Regression with RVMs consists of three main steps: initialization, learning and prediction. 
 \subsubsection{Assigning a prior to each weight (initialization)} Priors control the importance of a given basis function. The first step is to assign a prior to each weight. Note, the hyperparameters of each weight are independent of each other \footnote{In contrast to SVMs, where a single shared hyperparameter is used [2].}. The parameter $\alpha^{-1}$ is one of the parameters that we aim to optimize later on. The other parameter is the mean $\mu$, although it is set to zero in this step.
 
-The prior of weight $i$ is of the form $p(w_i|\alpha_i)=\mathcal{N}(0,\alpha_{i}^{-1})$. When we have multiple data points, the prior $p(\boldsymbol{w}|\boldsymbol{\alpha})$ is simply the product of all the priors of each weight.
+The prior of weight $w_i$ is of the form
+\begin{equation}
+p(w_i|\alpha_i)=\mathcal{N}(w_i|0,\alpha_{i}^{-1})
+\end{equation}
+When we have multiple data points, the prior $p(\boldsymbol{w}|\boldsymbol{\alpha})$ is simply the product of all the priors of each weight.
 
-\subsubsection{Optimizing the hyperparameters (learning)}
+\subsubsection{Optimizing the hyperparameters (learning)} In order to keep updating our belief about the weights given new data points, we need to compute the posterior. Since both the likelihood and the prior are Gaussian, the resulting posterior
+\begin{equation}
+p(\boldsymbol{w}|\boldsymbol{t}, \boldsymbol{\alpha}, \sigma^2)=\mathcal{N}(m,\Sigma)
+\end{equation}
+is also Gaussian, whose parameters (i.e. $m$ and $\Sigma$) can be found given existing formulas [2].
 
-% mention posterior etc.
+The posterior can be simplified by integrating out the weights, which leads to the marginal likelihood $p(\boldsymbol{t}, \boldsymbol{\alpha}, \sigma^2)$.
+
+Now, the aim is to estimate $\alpha$ and $\sigma^2$ that maximize the marginal likelihood above \footnote{This is known as type-2 maximum likelihood.}, which can be accomplished in two ways. Either, we can set the derivative of the log marginal likelihood to zero, in order to obtain $\alpha$ and $\sigma^2$, or use expectation maximization method [1,2]. The new estimation of hyperparameters can then be used to estimate the mean and the covariance of the posterior [2]. The re-estimation process repeats until convergence \footnote{When an appropriate convergence criterion is satisfied [2]. } [1].
+
+\subsubsection{Prediction}
+Once the optimal values of $\alpha$ and $\sigma^2$ have been found, we can use them to find the predictive distribution over $t$ [2]. Given a new input $x$, it is given by $p(t|\boldsymbol{x}, \boldsymbol{X}, \boldsymbol{t}, \boldsymbol{\alpha}, \sigma^2)$ is also a Gaussian, so there exists a closed-form formula to compute the mean and the covariance.
 
 \subsection{Classification}
